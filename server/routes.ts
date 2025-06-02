@@ -43,7 +43,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Cart
   app.get("/api/cart", async (req, res) => {
     try {
-      const sessionId = req.sessionID || "default-session";
+      const sessionId = (req as any).sessionID || "default-session";
       const cartItems = await storage.getCartItems(sessionId);
       res.json(cartItems);
     } catch (error) {

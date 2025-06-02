@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Loader2, RotateCw, ZoomIn, ZoomOut } from 'lucide-react';
 
@@ -157,6 +157,9 @@ export function ProductViewer3D({ productName, productImage, isOpen, onClose }: 
             <span>3D Product View</span>
             <span className="text-sm font-normal text-slate-600">- {productName}</span>
           </DialogTitle>
+          <DialogDescription>
+            Interactive 3D model viewer for {productName}. Drag to rotate, use controls to zoom and interact with the product.
+          </DialogDescription>
         </DialogHeader>
         
         <div className="relative">
