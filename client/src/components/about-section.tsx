@@ -76,7 +76,7 @@ export function AboutSection() {
                 }}
               >
                 <img 
-                  src="/attached_assets/image_1748847359212.png" 
+                  src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&h=687&q=80" 
                   alt="Sawaira Rafi - Software Engineer"
                   className="w-full h-auto transition-all duration-700 group-hover:scale-105"
                   style={{
