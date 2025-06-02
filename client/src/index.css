@@ -78,7 +78,27 @@
 
 @layer utilities {
   .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  .animate-gradient-shift {
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .rotate-y-12 {
+    transform: rotateY(12deg);
+  }
+  
+  .rotate-x-6 {
+    transform: rotateX(6deg);
   }
   
   .glass-effect {
@@ -90,9 +110,24 @@
 
 @keyframes float {
   0%, 100% { 
-    transform: translateY(0px); 
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translateY(-10px) translateX(5px);
+    opacity: 1;
   }
   50% { 
-    transform: translateY(-10px); 
+    transform: translateY(-20px) translateX(-5px);
+    opacity: 0.8;
   }
+  75% { 
+    transform: translateY(-10px) translateX(3px);
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }

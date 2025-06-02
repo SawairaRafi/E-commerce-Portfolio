@@ -62,24 +62,64 @@ export function AboutSection() {
             </div>
           </div>
           
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-            <div className="relative">
-              <img 
-                src="/attached_assets/image_1748847359212.png" 
-                alt="Sawaira Rafi - Software Engineer"
-                className="rounded-2xl shadow-2xl w-full transform group-hover:scale-105 transition-all duration-500 group-hover:rotate-1"
+          <div className="relative group perspective-1000">
+            {/* Animated glow border */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition duration-1000 animate-pulse bg-[length:200%_200%] animate-gradient-shift"></div>
+            
+            {/* 3D container */}
+            <div className="relative transform-gpu transition-all duration-700 group-hover:scale-110 preserve-3d">
+              <div 
+                className="relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:rotate-y-12 group-hover:rotate-x-6"
                 style={{
-                  filter: 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15))',
-                  transform: 'perspective(1000px) rotateY(-5deg) rotateX(2deg)'
+                  transformStyle: 'preserve-3d',
+                  transform: 'perspective(1200px) rotateY(-8deg) rotateX(4deg) translateZ(0)'
                 }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-accent/10 rounded-2xl opacity-80" />
+              >
+                <img 
+                  src="/attached_assets/image_1748847359212.png" 
+                  alt="Sawaira Rafi - Software Engineer"
+                  className="w-full h-auto transition-all duration-700 group-hover:scale-105"
+                  style={{
+                    filter: 'drop-shadow(0 30px 40px rgba(0, 0, 0, 0.3)) brightness(1.05) contrast(1.1)',
+                  }}
+                />
+                
+                {/* Holographic overlay */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 via-transparent to-purple-400/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500"
+                  style={{
+                    background: 'linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, transparent 30%, rgba(147, 51, 234, 0.1) 70%, rgba(37, 99, 235, 0.1) 100%)'
+                  }}
+                />
+                
+                {/* Depth layer */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-accent/20 rounded-3xl opacity-70 group-hover:opacity-90 transition-all duration-500"
+                  style={{
+                    transform: 'translateZ(-10px)'
+                  }}
+                />
+              </div>
               
-              {/* Floating elements for 3D effect */}
-              <div className="absolute -top-4 -right-4 w-8 h-8 bg-accent/20 rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}></div>
-              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-primary/20 rounded-full animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
-              <div className="absolute top-1/2 -right-2 w-4 h-4 bg-white/30 rounded-full animate-pulse"></div>
+              {/* Dynamic floating elements */}
+              <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-r from-accent to-primary rounded-full animate-bounce opacity-80 group-hover:opacity-100 transition-opacity" style={{ animationDelay: '0s', animationDuration: '3s', transform: 'translateZ(50px)' }}>
+                <div className="w-full h-full rounded-full bg-white/30 animate-ping"></div>
+              </div>
+              
+              <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full animate-bounce opacity-80 group-hover:opacity-100 transition-opacity" style={{ animationDelay: '1s', animationDuration: '4s', transform: 'translateZ(30px)' }}>
+                <div className="w-full h-full rounded-full bg-white/40 animate-pulse"></div>
+              </div>
+              
+              <div className="absolute top-1/4 -right-4 w-6 h-6 bg-white/40 rounded-full animate-pulse group-hover:animate-bounce" style={{ transform: 'translateZ(40px)' }}></div>
+              
+              <div className="absolute bottom-1/4 -left-4 w-4 h-4 bg-accent/60 rounded-full animate-ping" style={{ animationDelay: '2s', transform: 'translateZ(20px)' }}></div>
+              
+              {/* Particle effect */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-1/3 left-1/4 w-2 h-2 bg-white/60 rounded-full animate-float opacity-0 group-hover:opacity-100 transition-opacity" style={{ animationDelay: '0.5s' }}></div>
+                <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-accent/80 rounded-full animate-float opacity-0 group-hover:opacity-100 transition-opacity" style={{ animationDelay: '1.5s' }}></div>
+                <div className="absolute top-1/2 left-1/3 w-1.5 h-1.5 bg-primary/70 rounded-full animate-float opacity-0 group-hover:opacity-100 transition-opacity" style={{ animationDelay: '2.5s' }}></div>
+              </div>
             </div>
           </div>
         </div>
