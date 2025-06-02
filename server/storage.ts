@@ -1,4 +1,6 @@
-import { Product, InsertProduct, CartItem, InsertCartItem, Contact, InsertContact } from "@shared/schema";
+import { products, cartItems, contacts, type Product, type InsertProduct, type CartItem, type InsertCartItem, type Contact, type InsertContact } from "@shared/schema";
+import { db } from "./db";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
   // Products
@@ -19,7 +21,121 @@ export interface IStorage {
   createContact(contact: InsertContact): Promise<Contact>;
 }
 
-export class MemStorage implements IStorage {
+export class DatabaseStorage implements IStorage {
+  async getProducts(): Promise<Product[]> {
+    return await db.select().from(products);
+  }
+
+  async getProduct(id: number): Promise<Product | undefined> {
+    const [product] = await db.select().from(products).where(eq(products.id, id));
+    return product || undefined;
+  }
+
+  async getProductsByCategory(category: string): Promise<Product[]> {
+    return await db.select().from(products).where(eq(products.category, category));
+  }
+
+  async searchProducts(query: string): Promise<Product[]> {
+    const allProducts = await db.select().from(products);
+    const searchTerm = query.toLowerCase();
+    return allProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm) ||
+      product.category.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  async createProduct(insertProduct: InsertProduct): Promise<Product> {
+    const [product] = await db
+      .insert(products)
+      .values(insertProduct)
+      .returning();
+    return product;
+  }
+
+  async getCartItems(sessionId: string): Promise<(CartItem & { product: Product })[]> {
+    const items = await db
+      .select({
+        id: cartItems.id,
+        sessionId: cartItems.sessionId,
+        productId: cartItems.productId,
+        quantity: cartItems.quantity,
+        product: products
+      })
+      .from(cartItems)
+      .innerJoin(products, eq(cartItems.productId, products.id))
+      .where(eq(cartItems.sessionId, sessionId));
+
+    return items.map(item => ({
+      id: item.id,
+      sessionId: item.sessionId,
+      productId: item.productId,
+      quantity: item.quantity,
+      product: item.product
+    }));
+  }
+
+  async addToCart(cartItem: InsertCartItem): Promise<CartItem> {
+    // Check if item already exists in cart
+    const [existingItem] = await db
+      .select()
+      .from(cartItems)
+      .where(and(eq(cartItems.sessionId, cartItem.sessionId), eq(cartItems.productId, cartItem.productId)));
+
+    if (existingItem) {
+      // Update quantity instead of creating new item
+      const [updatedItem] = await db
+        .update(cartItems)
+        .set({ quantity: existingItem.quantity + cartItem.quantity })
+        .where(eq(cartItems.id, existingItem.id))
+        .returning();
+      return updatedItem;
+    }
+
+    const [newItem] = await db
+      .insert(cartItems)
+      .values(cartItem)
+      .returning();
+    return newItem;
+  }
+
+  async updateCartItem(id: number, quantity: number): Promise<CartItem | undefined> {
+    if (quantity <= 0) {
+      await db.delete(cartItems).where(eq(cartItems.id, id));
+      return undefined;
+    }
+
+    const [updatedItem] = await db
+      .update(cartItems)
+      .set({ quantity })
+      .where(eq(cartItems.id, id))
+      .returning();
+    return updatedItem || undefined;
+  }
+
+  async removeFromCart(id: number): Promise<boolean> {
+    const result = await db.delete(cartItems).where(eq(cartItems.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  async clearCart(sessionId: string): Promise<boolean> {
+    await db.delete(cartItems).where(eq(cartItems.sessionId, sessionId));
+    return true;
+  }
+
+  async createContact(insertContact: InsertContact): Promise<Contact> {
+    const [contact] = await db
+      .insert(contacts)
+      .values({
+        ...insertContact,
+        createdAt: new Date().toISOString()
+      })
+      .returning();
+    return contact;
+  }
+}
+
+class MemStorage implements IStorage {
   private products: Map<number, Product>;
   private cartItems: Map<number, CartItem>;
   private contacts: Map<number, Contact>;
@@ -285,4 +401,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
