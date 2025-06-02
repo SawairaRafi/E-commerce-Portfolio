@@ -62,13 +62,25 @@ export function AboutSection() {
             </div>
           </div>
           
-          <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=800" 
-              alt="Sawaira Rafi - Software Engineer"
-              className="rounded-2xl shadow-2xl w-full"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-2xl" />
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+            <div className="relative">
+              <img 
+                src="/attached_assets/image_1748847359212.png" 
+                alt="Sawaira Rafi - Software Engineer"
+                className="rounded-2xl shadow-2xl w-full transform group-hover:scale-105 transition-all duration-500 group-hover:rotate-1"
+                style={{
+                  filter: 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15))',
+                  transform: 'perspective(1000px) rotateY(-5deg) rotateX(2deg)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-accent/10 rounded-2xl opacity-80" />
+              
+              {/* Floating elements for 3D effect */}
+              <div className="absolute -top-4 -right-4 w-8 h-8 bg-accent/20 rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}></div>
+              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-primary/20 rounded-full animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
+              <div className="absolute top-1/2 -right-2 w-4 h-4 bg-white/30 rounded-full animate-pulse"></div>
+            </div>
           </div>
         </div>
       </div>

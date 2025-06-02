@@ -45,20 +45,149 @@ export function ProductViewer3D({ productName, productImage, isOpen, onClose }: 
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // Create a simple product representation
-        const geometry = new THREE.BoxGeometry(2, 2, 0.5);
+        // Create realistic product representation based on product type
+        cube = new THREE.Group();
         
-        // Load texture from product image
-        const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load(productImage);
+        if (productName.toLowerCase().includes('headphone') || productName.toLowerCase().includes('wireless pro max')) {
+          // Create detailed headphone geometry
+          const headbandGeometry = new THREE.TorusGeometry(1.2, 0.08, 8, 32, Math.PI);
+          const headbandMaterial = new THREE.MeshPhongMaterial({ color: 0x1a1a1a, shininess: 50 });
+          const headband = new THREE.Mesh(headbandGeometry, headbandMaterial);
+          headband.rotation.z = Math.PI;
+          cube.add(headband);
+
+          // Left ear cup
+          const earcupGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.15, 32);
+          const earcupMaterial = new THREE.MeshPhongMaterial({ color: 0x2a2a2a, shininess: 80 });
+          const leftEarcup = new THREE.Mesh(earcupGeometry, earcupMaterial);
+          leftEarcup.position.set(-1, -0.5, 0);
+          leftEarcup.rotation.z = Math.PI / 2;
+          cube.add(leftEarcup);
+
+          // Right ear cup
+          const rightEarcup = new THREE.Mesh(earcupGeometry, earcupMaterial);
+          rightEarcup.position.set(1, -0.5, 0);
+          rightEarcup.rotation.z = Math.PI / 2;
+          cube.add(rightEarcup);
+
+          // Add padding detail
+          const paddingGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.05, 32);
+          const paddingMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 });
+          const leftPadding = new THREE.Mesh(paddingGeometry, paddingMaterial);
+          leftPadding.position.set(-1, -0.5, 0.1);
+          leftPadding.rotation.z = Math.PI / 2;
+          cube.add(leftPadding);
+
+          const rightPadding = new THREE.Mesh(paddingGeometry, paddingMaterial);
+          rightPadding.position.set(1, -0.5, 0.1);
+          rightPadding.rotation.z = Math.PI / 2;
+          cube.add(rightPadding);
+
+        } else if (productName.toLowerCase().includes('watch') || productName.toLowerCase().includes('smart') || productName.toLowerCase().includes('fitness')) {
+          // Create detailed smartwatch geometry
+          const watchBodyGeometry = new THREE.BoxGeometry(0.8, 1.0, 0.25);
+          const watchBodyMaterial = new THREE.MeshPhongMaterial({ color: 0x2a2a2a, shininess: 100 });
+          const watchBody = new THREE.Mesh(watchBodyGeometry, watchBodyMaterial);
+          watchBody.position.set(0, 0, 0);
+          cube.add(watchBody);
+
+          // Watch screen
+          const screenGeometry = new THREE.PlaneGeometry(0.6, 0.8);
+          const screenMaterial = new THREE.MeshPhongMaterial({ color: 0x000000, emissive: 0x001122 });
+          const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+          screen.position.set(0, 0, 0.13);
+          cube.add(screen);
+
+          // Digital crown
+          const crownGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.15, 16);
+          const crownMaterial = new THREE.MeshPhongMaterial({ color: 0x666666, shininess: 100 });
+          const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+          crown.position.set(0.45, 0.2, 0);
+          crown.rotation.z = Math.PI / 2;
+          cube.add(crown);
+
+          // Watch band
+          const bandGeometry = new THREE.BoxGeometry(0.4, 0.1, 0.15);
+          const bandMaterial = new THREE.MeshPhongMaterial({ color: 0x1a1a1a });
+          const topBand = new THREE.Mesh(bandGeometry, bandMaterial);
+          topBand.position.set(0, 0.8, 0);
+          cube.add(topBand);
+
+          const bottomBand = new THREE.Mesh(bandGeometry, bandMaterial);
+          bottomBand.position.set(0, -0.8, 0);
+          cube.add(bottomBand);
+
+        } else if (productName.toLowerCase().includes('earbuds') || productName.toLowerCase().includes('true wireless')) {
+          // Create earbuds with case
+          const caseGeometry = new THREE.BoxGeometry(1.2, 0.8, 0.4);
+          const caseMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 100 });
+          const case3d = new THREE.Mesh(caseGeometry, caseMaterial);
+          case3d.position.set(0, 0, 0);
+          cube.add(case3d);
+
+          // Left earbud
+          const earbudGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+          const earbudMaterial = new THREE.MeshPhongMaterial({ color: 0x2a2a2a, shininess: 80 });
+          const leftEarbud = new THREE.Mesh(earbudGeometry, earbudMaterial);
+          leftEarbud.position.set(-0.3, 0, 0.25);
+          cube.add(leftEarbud);
+
+          // Right earbud
+          const rightEarbud = new THREE.Mesh(earbudGeometry, earbudMaterial);
+          rightEarbud.position.set(0.3, 0, 0.25);
+          cube.add(rightEarbud);
+
+          // Stems
+          const stemGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.3, 8);
+          const leftStem = new THREE.Mesh(stemGeometry, earbudMaterial);
+          leftStem.position.set(-0.3, -0.2, 0.25);
+          cube.add(leftStem);
+
+          const rightStem = new THREE.Mesh(stemGeometry, earbudMaterial);
+          rightStem.position.set(0.3, -0.2, 0.25);
+          cube.add(rightStem);
+
+        } else if (productName.toLowerCase().includes('dock') || productName.toLowerCase().includes('charger')) {
+          // Create charging dock
+          const baseGeometry = new THREE.BoxGeometry(1.5, 1.0, 0.2);
+          const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333, shininess: 100 });
+          const base = new THREE.Mesh(baseGeometry, baseMaterial);
+          base.position.set(0, 0, 0);
+          cube.add(base);
+
+          // Charging pads
+          const padGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.05, 32);
+          const padMaterial = new THREE.MeshPhongMaterial({ color: 0x1a1a1a, emissive: 0x001100 });
+          
+          for (let i = 0; i < 3; i++) {
+            const pad = new THREE.Mesh(padGeometry, padMaterial);
+            pad.position.set(-0.4 + i * 0.4, 0, 0.15);
+            cube.add(pad);
+          }
+
+          // Stand
+          const standGeometry = new THREE.BoxGeometry(0.3, 0.8, 0.1);
+          const standMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 });
+          const stand = new THREE.Mesh(standGeometry, standMaterial);
+          stand.position.set(0.6, 0, 0.4);
+          cube.add(stand);
+
+        } else {
+          // Default tech accessory with better details
+          const mainGeometry = new THREE.BoxGeometry(1.5, 1.0, 0.3);
+          const mainMaterial = new THREE.MeshPhongMaterial({ color: 0x2a2a2a, shininess: 80 });
+          const mainBody = new THREE.Mesh(mainGeometry, mainMaterial);
+          
+          // Add some detail elements
+          const detailGeometry = new THREE.BoxGeometry(1.2, 0.8, 0.1);
+          const detailMaterial = new THREE.MeshPhongMaterial({ color: 0x1a1a1a });
+          const detail = new THREE.Mesh(detailGeometry, detailMaterial);
+          detail.position.set(0, 0, 0.2);
+          
+          cube.add(mainBody);
+          cube.add(detail);
+        }
         
-        const material = new THREE.MeshLambertMaterial({ 
-          map: texture,
-          transparent: true,
-          opacity: 0.9
-        });
-        
-        cube = new THREE.Mesh(geometry, material);
         cube.castShadow = true;
         scene.add(cube);
 
