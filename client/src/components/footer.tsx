@@ -1,4 +1,4 @@
-import { Mail, ArrowRight } from 'lucide-react';
+import { Mail, ArrowRight, Github, Linkedin, Twitter, Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
@@ -28,27 +28,78 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-secondary text-white py-12">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">SR</span>
+    <footer className="relative overflow-hidden">
+      {/* Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-secondary"></div>
+      
+      {/* Geometric Pattern Overlay */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(37, 99, 235, 0.2) 0%, transparent 50%)
+          `
+        }}
+      />
+      
+      <div className="relative container mx-auto px-6 py-16 text-white">
+        <div className="grid lg:grid-cols-5 gap-12">
+          {/* Brand Section */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-xl">
+                <span className="text-white font-bold text-xl">SR</span>
               </div>
-              <span className="text-xl font-bold">Sawaira Rafi</span>
+              <div>
+                <h3 className="text-2xl font-bold">Sawaira Rafi</h3>
+                <p className="text-primary text-sm font-medium">Tech Curator & Engineer</p>
+              </div>
             </div>
-            <p className="text-slate-300">
-              Premium tech products curated by a software engineer for tech enthusiasts.
+            <p className="text-slate-300 text-lg leading-relaxed">
+              Handpicked premium tech products curated by a passionate software engineer for fellow tech enthusiasts who appreciate quality and innovation.
             </p>
+            
+            {/* Social Links */}
+            <div className="flex space-x-4">
+              <a 
+                href="https://github.com/sawaira-rafi" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+              >
+                <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </a>
+              <a 
+                href="https://linkedin.com/in/sawaira-rafi" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+              >
+                <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </a>
+              <a 
+                href="https://twitter.com/sawaira_rafi" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+              >
+                <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </a>
+            </div>
           </div>
           
-          <div>
-            <h4 className="font-semibold mb-4">Products</h4>
-            <ul className="space-y-2 text-slate-300">
+          {/* Quick Links */}
+          <div className="space-y-6">
+            <h4 className="text-lg font-semibold text-white flex items-center space-x-2">
+              <Star className="w-5 h-5 text-accent" />
+              <span>Products</span>
+            </h4>
+            <ul className="space-y-3">
               {footerLinks.products.map((link, index) => (
                 <li key={index}>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="text-slate-300 hover:text-accent transition-all duration-300 hover:translate-x-1 inline-block">
                     {link}
                   </a>
                 </li>
@@ -56,12 +107,15 @@ export function Footer() {
             </ul>
           </div>
           
-          <div>
-            <h4 className="font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-slate-300">
+          <div className="space-y-6">
+            <h4 className="text-lg font-semibold text-white flex items-center space-x-2">
+              <Heart className="w-5 h-5 text-primary" />
+              <span>Support</span>
+            </h4>
+            <ul className="space-y-3">
               {footerLinks.support.map((link, index) => (
                 <li key={index}>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="text-slate-300 hover:text-primary transition-all duration-300 hover:translate-x-1 inline-block">
                     {link}
                   </a>
                 </li>
@@ -69,37 +123,54 @@ export function Footer() {
             </ul>
           </div>
           
-          <div>
-            <h4 className="font-semibold mb-4">Newsletter</h4>
-            <p className="text-slate-300 mb-4">Get updates on new products and tech insights.</p>
-            <form onSubmit={handleNewsletterSubmit} className="flex">
-              <Input
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 rounded-r-none border-slate-600 bg-slate-700 text-white placeholder:text-slate-400"
-                required
-              />
-              <Button 
-                type="submit"
-                className="rounded-l-none bg-primary hover:bg-primary/90"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+          {/* Newsletter */}
+          <div className="space-y-6">
+            <h4 className="text-lg font-semibold text-white flex items-center space-x-2">
+              <Mail className="w-5 h-5 text-accent" />
+              <span>Stay Updated</span>
+            </h4>
+            <p className="text-slate-300">Get exclusive tech insights and product launches first.</p>
+            <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+              <div className="relative">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-4 pr-12 py-3 bg-white/10 backdrop-blur border border-white/20 rounded-xl text-white placeholder:text-slate-400 focus:bg-white/20 focus:border-accent transition-all"
+                  required
+                />
+                <Button 
+                  type="submit"
+                  className="absolute right-1 top-1 bottom-1 px-4 bg-gradient-to-r from-primary to-accent hover:shadow-lg hover:scale-105 transition-all duration-300 rounded-lg"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="text-xs text-slate-400">Join 1000+ tech enthusiasts. No spam, ever.</p>
             </form>
           </div>
         </div>
         
-        <div className="border-t border-slate-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-300">© 2024 Sawaira Rafi. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-slate-300 hover:text-white transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-slate-300 hover:text-white transition-colors">
-              Terms of Service
-            </a>
+        {/* Bottom Section */}
+        <div className="mt-16 pt-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-2 text-slate-300">
+              <span>© 2024 Sawaira Rafi. Made with</span>
+              <Heart className="w-4 h-4 text-red-400 animate-pulse" />
+              <span>for tech lovers.</span>
+            </div>
+            <div className="flex space-x-8">
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
+                Privacy Policy
+              </a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
+                Terms of Service
+              </a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
+                Cookie Policy
+              </a>
+            </div>
           </div>
         </div>
       </div>
